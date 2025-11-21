@@ -1,6 +1,8 @@
 import Testing
 @testable import IRFunctionalPipeline
 
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+@Test func testJoined() {
+    #expect("" == ([] |> joined(" ")))
+    #expect("hello" == (["hello"] |> joined(" ")))
+    #expect("hello world" == (["hello", "world"] |> joined(" ")))
 }
