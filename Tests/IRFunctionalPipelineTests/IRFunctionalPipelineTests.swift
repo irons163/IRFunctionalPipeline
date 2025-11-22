@@ -61,3 +61,25 @@ struct EitherTests {
         #expect("Error" == (Either<String, [Int]>.left("Error") <> Either<String, [Int]>.left("Error2")).left)
     }
 }
+
+struct KeyPathTests {
+    @Test func testGet() {
+        #expect(3 == ([1, 2, 3] |> get(\.count)))
+    }
+
+    @Test func testOver() {
+        let user = User(id: 1)
+        let newUser = (over(\User.id) <| { $0 + 1 }) <| user
+        #expect(2 == newUser.id)
+    }
+
+    @Test func testSet() {
+        let user = User(id: 1)
+        let newUser = (set(\User.id) <| 2) <| user
+        #expect(2 == newUser.id)
+    }
+}
+
+fileprivate struct User {
+    var id: Int
+}

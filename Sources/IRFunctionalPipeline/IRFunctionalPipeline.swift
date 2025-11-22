@@ -15,7 +15,12 @@ precedencegroup HashRocket {
 
 infix operator =>: HashRocket
 
+infix operator <|: FunctionApplication
 infix operator |>: FunctionApplicationFlipped
+
+public func <| <A, B> (f: (A) -> B, a: A) -> B {
+  return f(a)
+}
 
 public func |> <A, B> (a: A, f: (A) -> B) -> B {
     return f(a)
