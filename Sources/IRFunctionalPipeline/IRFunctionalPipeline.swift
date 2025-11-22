@@ -64,6 +64,15 @@ extension String: Monoid {
     }
 }
 
+// Provide Monoid (and thus Semigroup) for Array via concatenation.
+extension Array: Monoid {
+    public static var identity: [Element] { [] }
+
+    public static func <>(lhs: [Element], rhs: [Element]) -> [Element] {
+        lhs + rhs
+    }
+}
+
 public func id<A>(_ a: A) -> A {
     return a
 }
@@ -76,4 +85,25 @@ public func mapOptional<S: Sequence, A>(_ f: @escaping (S.Element) -> A?) -> (S)
     return { xs in
         xs.compactMap(f)
     }
+}
+
+public func const<A, B>(_ a: A) -> (B) -> A {
+    return { _ in a }
+}
+
+public func map<A, S: Sequence>(_ f: @escaping (S.Element) -> A) -> (S) -> [A] {
+  return { xs in
+    xs.map(f)
+  }
+}
+
+public func <-> <A, B, C>(b2c: (B) -> C, b: Either<A, B>) -> Either<A, C> {
+  return b.map(b2c)
+}
+
+infix operator <->: Functor
+
+precedencegroup Functor {
+//  higherThan: Apply
+  associativity: left
 }
